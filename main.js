@@ -1,53 +1,68 @@
 // NOTE: PLEASE READ EACH INSTRUCTION COMMENT CAREFULLY TO HELP YOU PROCESS THIS PROJECT
 // IF YOU ARE STUCK ASK AN INSTRUCTOR FOR HELP, ALWAYS WRITE THE CODE BELOW THE ASSIGNMENTS.
 
-productArray = [];
+// Application global value for all products added.  This only goes away if you refresh the page.
+// let productArray = [];
+function init() {
+  const products =
+    JSON.parse(window.localStorage.getItem("productArray")) || [];
+  let str = "";
+  for (let i = 0; i < products.length; i++) {
+    str += '<div style="display: block;">' + products[i] + "</div>";
+  }
+  document.getElementById("productList").innerHTML = str;
+  return products;
+}
+
+// self executing function
+const productArray = init();
+
+function add(value) {
+  productArray.push(value);
+  window.localStorage.setItem("productArray", JSON.stringify(productArray));
+}
+
+function list() {
+  return productArray;
+}
+
 function addProduct() {
-  // Assignment 1
-  // You need to change the id that this collects to product.
+  // Get the value from the input box
   let input = document.getElementById("input").value;
-  // You will need to create a div using javascript,
-  // Use this site to help you understand how: https://www.w3schools.com/jsref/met_document_createelement.asp
+  // Get the output values
+  let output = document.getElementById("productList");
 
-  // Once you create create a div,
-  // you will need to get the output using the same method you did for the input
-  // Except you do not need to include the value at the end.
+  // Add the input value to the productArray.
+  add(input);
 
-  // CHALLENGE SECTION:
-  // If you feel up for a challenge, try and use an if statement if(condition){run this code}
-  // to return an alert if the input is empty. You will need to get the id as in previous assignments above
-  // and then get the value at the end and check if they are strictly equal to an empty string.
-  // If the code you will want to run after checking the condition is to run the alert method.
-  // If you do not know the alert method, look it up on google using the w3schools,
-  // do not forget to include a return false at the end to not reload your webpage.
+  // const newDiv = document.createElement('div');
+  // newDiv.style.display = 'block';
+  // newDiv.textContent = input;
+  // output.appendChild(newDiv);
 
-  // Assignment 2:
-  // You need to put the value of the input into an array to call later.
-  // That means you will need to assign your input using brackets around it
-  // to a newProduct variable, remember that assign can mean the equals sign(=).
-  let newProduct = { input };
-  // Hint: You could push your product to a new array once you create a new variable
-  // that makes a single object {} with the product variable you made above.
-  // Please look up how to use push on an array here: https://www.w3schools.com/jsref/jsref_push.asp
-  // use console.log and pass in the product array to check if you have it setup correctly.
-  // console.log(productArray)
+  // We are going to re-render the entire list of products so we need to clear out what was there before.
+  // output.innerHtml = "";
 
-  // Assignment 3:
-  // Hint: Use a loop(look up the javascript loop on w3schools.) on your product array and set the max length of the loop to the array using
-  // dot notation (array.length) and then you do the following:
-  //
-  // set the input to empty, similar how you would check in the if statement previously,
-  // just get document.getelementbyid then set the .value to an empty string.
+  let str = "";
+  // Loop over all products and add them to the productList DOM element.
+  const products = list();
+  for (let i = 0; i < products.length; i++) {
+    // Render to string, concatenating
+    str += '<div style="display: block;">' + products[i] + "</div>";
 
-  // then set the output div to display block, its normally set to none, which means invisible
-  // This means that you need to get your output variable use dot notation to set style.display = "block"
-
-  // set the div.textContent equal to the the array index number [i] and dot notation of the product
-  // `${productArray[i].your input}`
-
-  // finally use the appendChild method from the output variable you had from earlier.
-  // output.appendChild(yourdivnamehere)
-
-  // this line is to prevent the webpage from reloading. DO NOT MODIFY IT.
+    // Append method for adding DOM elements using productArray
+    // // Creating a newly unattached element.
+    // const newDiv = document.createElement('div');
+    // // Setting it to be a block element and not inline
+    // newDiv.style.display = 'block';
+    // // Forcably sets the text in the element.
+    // newDiv.textContent = productArray[i]; // Text value
+    // // Attaches the newly unattached element to the output list aka #productList at the end of the elements.
+    // output.appendChild(newDiv);
+  }
+  // Forably overwrite the entire output with the new string.
+  output.innerHTML = str;
+  // Clear out the value of the input box
+  document.getElementById("input").value = "";
   return false;
 }
